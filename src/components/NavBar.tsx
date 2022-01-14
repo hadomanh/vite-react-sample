@@ -27,6 +27,26 @@ function NavBar() {
                         borderRadius: '5px',
                         }
                         )}
+                    to="/">
+                    Home
+                </NavLink>
+
+                <NavLink
+                    style={({ isActive }) => (isActive ? {
+                        display: 'block',
+                        color:  '#ffffff',
+                        backgroundColor: '#007bff',
+                        padding: '10px',
+                        borderRadius: '5px',
+
+                        } : {
+                        display: 'block',
+                        color:  '#007bff',
+                        borderColor: '#007bff',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        }
+                        )}
                     to="/popup-setting">
                     Popup setting
                 </NavLink>

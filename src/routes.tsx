@@ -1,4 +1,5 @@
 import AppLayout from "./AppLayout";
+import Contract from "./components/Contract";
 import PopupSetting from "./components/PopupSetting";
 import Todolist from "./components/Todolist";
 
@@ -9,7 +10,7 @@ export const routes = [
         children: [
             {
                 path: '/',
-                element: <PopupSetting />
+                element: <Contract />
             },
             {
                 path: 'popup-setting',
