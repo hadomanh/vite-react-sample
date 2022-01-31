@@ -5,11 +5,11 @@ import {
 } from "react-bootstrap";
 
 import { useEffect, useState } from "react"
-import useEthers from "../hooks/useEthers";
+import useWallet from "../hooks/useWallet";
 
 export default function Contract() {
 
-    const { provider, account, balance, handleConnect, handleDisconnect } = useEthers();
+    const { provider, account, balance, handleConnect, handleDisconnect } = useWallet();
     const [contract, setContract] = useState<any>(null);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function Contract() {
             <Container>
                 <h1>{ account }</h1>
                 <h1>Balance: { balance }</h1>
-                <h1>{ contract.address }</h1>
+                <h1>{ contract && contract.address }</h1>
                 <Button variant="primary" onClick={() => handleConnect()}>Connect</Button>
                 <Button variant="warning" onClick={() => handleDisconnect()}>Disconnect</Button>
             </Container>

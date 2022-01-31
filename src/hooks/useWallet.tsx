@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useState, useEffect } from "react"
 
-const useEthers = () => {
+const useWallet = () => {
 
     const [ provider, setProvider ] = useState<any>(null)
     const [ account, setAccount ] = useState<string>('')
@@ -75,6 +75,14 @@ const useEthers = () => {
         setBalance('')
     }
 
+    const getBalance = () => {
+        if (provider && account) {
+            provider.getBalance(account).then((_balance: any) => {
+                setBalance(ethers.utils.formatEther(_balance))
+            });
+        }
+    }
+
     useEffect(() => {
         getProvider()
     }, [])
@@ -101,15 +109,18 @@ const useEthers = () => {
     }, [provider])
 
     useEffect(() => {
-        if (provider && account) {
-            provider.getBalance(account).then((_balance: any) => {
-                setBalance(ethers.utils.formatEther(_balance))
-            });
-        }
+        getBalance()
     }, [provider, account])
 
-    return { provider, account, balance, handleConnect, handleDisconnect }
+    return {
+        provider,
+        account,
+        balance,
+        getBalance,
+        handleConnect,
+        handleDisconnect
+    }
 }
 
-export default useEthers
-export { useEthers }
+export default useWallet
+export { useWallet }
