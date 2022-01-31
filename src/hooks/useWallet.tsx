@@ -1,14 +1,41 @@
 import { ethers } from "ethers";
 import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux";
+import { setWalletState } from "../store/wallet";
 
 const useWallet = () => {
 
     const [ provider, setProvider ] = useState<any>(null)
     const [ account, setAccount ] = useState<string>('')
-    const [ balance, setBalance ] = useState<string>('')
+    const [ balance, setBalance ] = useState<string>('0')
 
     const CHAIN_ID = import.meta.env.VITE_CHAIN_ID
     const RPC_URL = import.meta.env.VITE_RPC_URL
+    const dispatch = useDispatch()
+
+    const updateProvider = (_provider: any) => {
+        dispatch(
+            setWalletState({
+                provider: _provider,
+            })
+        )
+    }
+
+    const updateAccount = (_account: any) => {
+        dispatch(
+            setWalletState({
+                account: _account,
+            })
+        )
+    }
+
+    const updateBalance = (_balance: any) => {
+        dispatch(
+            setWalletState({
+                balance: _balance,
+            })
+        )
+    }
 
     const getProvider = async () => {
 
@@ -19,6 +46,7 @@ const useWallet = () => {
         
         const newProvider = new ethers.providers.Web3Provider(window.ethereum);
         setProvider(newProvider)
+        updateProvider(newProvider)
     }
 
     const switchChain = async () => {
@@ -63,6 +91,7 @@ const useWallet = () => {
         });
         
         setAccount(accounts[0]);
+        updateAccount(accounts[0]);
     };
 
     const handleConnect = async () => {
@@ -72,15 +101,23 @@ const useWallet = () => {
 
     const handleDisconnect = async () => {
         setAccount('')
-        setBalance('')
+        setBalance('0')
+
+        updateAccount('')
+        updateBalance('0')
     }
 
-    const getBalance = () => {
-        if (provider && account) {
-            provider.getBalance(account).then((_balance: any) => {
-                setBalance(ethers.utils.formatEther(_balance))
-            });
+    const getContract = async (address: string, abi: any) => {
+            
+        if (provider) {
+            return new ethers.Contract(
+                address,
+                abi,
+                provider.getSigner()
+            );
         }
+
+        return null
     }
 
     useEffect(() => {
@@ -90,6 +127,7 @@ const useWallet = () => {
     useEffect(() => {
         window.ethereum.on('accountsChanged', (accounts: any) => {
             setAccount(accounts[0]);
+            updateAccount(accounts[0]);
         });
 
         window.ethereum.on('chainChanged', async (_chainId: any) => {
@@ -109,16 +147,21 @@ const useWallet = () => {
     }, [provider])
 
     useEffect(() => {
-        getBalance()
+        if (provider && account) {
+            provider.getBalance(account).then((_balance: any) => {
+                setBalance(ethers.utils.formatEther(_balance))
+                updateBalance(ethers.utils.formatEther(_balance))
+            });
+        }
     }, [provider, account])
 
     return {
         provider,
         account,
         balance,
-        getBalance,
         handleConnect,
-        handleDisconnect
+        handleDisconnect,
+        getContract,
     }
 }
 
