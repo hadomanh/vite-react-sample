@@ -5,75 +5,42 @@ import {
 import {
   ButtonGroup,
   Container
-} from 'react-bootstrap'
+} from 'react-bootstrap';
 
-function NavBar() {
+import { navbar } from '@/configuration/navbar';
+
+export default function NavBar() {
+
+    const checkStyle = ({ isActive } : any) => (isActive ? 
+        {
+            display: 'block',
+            color:  '#ffffff',
+            backgroundColor: '#007bff',
+            padding: '10px',
+            borderRadius: '5px',
+        } : {
+            display: 'block',
+            color:  '#007bff',
+            borderColor: '#007bff',
+            padding: '10px',
+            borderRadius: '5px',
+        }
+    )
+
     return (
         <Container className="mt-5">
             <ButtonGroup>
-                <NavLink
-                    style={({ isActive }) => (isActive ? {
-                        display: 'block',
-                        color:  '#ffffff',
-                        backgroundColor: '#007bff',
-                        padding: '10px',
-                        borderRadius: '5px',
-
-                        } : {
-                        display: 'block',
-                        color:  '#007bff',
-                        borderColor: '#007bff',
-                        padding: '10px',
-                        borderRadius: '5px',
-                        }
-                        )}
-                    to="/">
-                    Home
-                </NavLink>
-
-                <NavLink
-                    style={({ isActive }) => (isActive ? {
-                        display: 'block',
-                        color:  '#ffffff',
-                        backgroundColor: '#007bff',
-                        padding: '10px',
-                        borderRadius: '5px',
-
-                        } : {
-                        display: 'block',
-                        color:  '#007bff',
-                        borderColor: '#007bff',
-                        padding: '10px',
-                        borderRadius: '5px',
-                        }
-                        )}
-                    to="/popup-setting">
-                    Popup setting
-                </NavLink>
-
-                <NavLink
-                    style={({ isActive }) => (isActive ? {
-                        display: 'block',
-                        color:  '#ffffff',
-                        backgroundColor: '#007bff',
-                        padding: '10px',
-                        borderRadius: '5px',
-
-                        } : {
-                        display: 'block',
-                        color:  '#007bff',
-                        borderColor: '#007bff',
-                        padding: '10px',
-                        borderRadius: '5px',
-                        }
-                        )}
-                    to="/todo-list">
-                    Todo list
-                </NavLink>
-                
+                {
+                    navbar.map((item, index) => (
+                        <NavLink
+                            key={index}
+                            style={checkStyle}
+                            to={item.path}>
+                            {item.title}
+                        </NavLink>
+                    ))
+                }
             </ButtonGroup>
         </Container>
     )
 }
-
-export default NavBar;

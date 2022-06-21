@@ -1,7 +1,7 @@
-import AppLayout from "./AppLayout";
-import Contract from "./components/Contract";
-import PopupSetting from "./components/PopupSetting";
-import Todolist from "./components/Todolist";
+import AppLayout from "@/AppLayout";
+import Contract from "@/components/Contract";
+import PopupSetting from "@/components/PopupSetting";
+import Todolist from "@/components/Todolist";
 
 export const routes = [
     {
