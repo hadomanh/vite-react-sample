@@ -5,10 +5,10 @@ import {
 } from "react-bootstrap";
 
 import { useEffect, useState } from "react"
-import useWallet from "../hooks/useWallet";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { getWalletBalance, handleConnectWallet, handleDisconnect } from "../store/wallet";
+import { getWalletBalance, handleConnectWallet, handleDisconnect } from "@/store/wallet";
+import { formatAddress, formatBalance } from "@/utils";
 
 export default function Contract() {
 
@@ -30,8 +30,8 @@ export default function Contract() {
     return (
         <>
             <Container>
-                <h1>{ wallet.account }</h1>
-                <h1>Balance: { wallet.balance }</h1>
+                <h1>{ formatAddress(wallet.account) }</h1>
+                <h1>Balance: { formatBalance(wallet.balance) }</h1>
                 <h1>{ contract && contract.address }</h1>
                 <Button variant="primary" onClick={() => dispatch(handleConnectWallet())}>Connect</Button>
                 <Button variant="warning" onClick={() => dispatch(handleDisconnect())}>Disconnect</Button>
