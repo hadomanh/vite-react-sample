@@ -125,6 +125,12 @@ const useWallet = () => {
     }, [])
 
     useEffect(() => {
+        
+        if (!window.ethereum?.request) {
+            console.log('MetaMask is not installed. Please consider installing it: https://metamask.io/download.html');
+            return;
+        }
+        
         window.ethereum.on('accountsChanged', (accounts: any) => {
             setAccount(accounts[0]);
             updateAccount(accounts[0]);
